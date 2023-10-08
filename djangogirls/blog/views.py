@@ -2,20 +2,24 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from .models import Post
 from .forms import PostForm
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+@login_required
 def post_list(request):
     """Defines the view 'post_list' which displays all blog posts ordered by publication date."""
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
     return render(request, 'blog/post_list.html', {'posts': posts})
 
 
+@login_required
 def post_detail(request, pk):
     """Defines the view 'post_detail' which displays a single blog post in detail."""
     post = get_object_or_404(Post, pk=pk)
     return render(request, 'blog/post_detail.html', {'post': post})
 
 
+@login_required
 def post_new(request):
     """Defines the view 'post_new' which displays a form for creating a new blog post."""
     if request.method == "POST":
@@ -31,6 +35,7 @@ def post_new(request):
     return render(request, 'blog/post_edit.html', {'form': form})
 
 
+@login_required
 def post_edit(request, pk):
     """Defines the view 'post_edit' which displays a form for editing a previous blog post."""
     post = get_object_or_404(Post, pk=pk)
@@ -47,6 +52,7 @@ def post_edit(request, pk):
     return render(request, 'blog/post_edit.html', {'form': form})
 
 
+@login_required
 def post_draft_list(request):
     """Defines the view 'post_draft_list' which displays a list of 
     blog post drafts (not published)."""
@@ -54,6 +60,7 @@ def post_draft_list(request):
     return render(request, 'blog/post_draft_list.html', {'posts': posts})
 
 
+@login_required
 def post_publish(request, pk):
     """Defines the view 'post_publish' which publishes, and then displays, the post."""
     post = get_object_or_404(Post, pk=pk)
@@ -61,6 +68,7 @@ def post_publish(request, pk):
     return redirect('post_detail', pk=pk)
 
 
+@login_required
 def post_remove(request, pk):
     """Defines the view 'post_remove' which deletes a post the displays the post list."""
     post = get_object_or_404(Post, pk=pk)
