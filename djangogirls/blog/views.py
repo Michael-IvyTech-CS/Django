@@ -5,7 +5,6 @@ from .forms import PostForm
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-@login_required
 def post_list(request):
     """Defines the view 'post_list' which displays all blog posts ordered by publication date."""
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
