@@ -55,7 +55,14 @@ def post_draft_list(request):
 
 
 def post_publish(request, pk):
-    """Defines the view 'post_publish' which publishes a post then displays the post."""
+    """Defines the view 'post_publish' which publishes, and then displays, the post."""
     post = get_object_or_404(Post, pk=pk)
     post.publish()
     return redirect('post_detail', pk=pk)
+
+
+def post_remove(request, pk):
+    """Defines the view 'post_remove' which deletes a post the displays the post list."""
+    post = get_object_or_404(Post, pk=pk)
+    post.delete()
+    return redirect('post_list')
